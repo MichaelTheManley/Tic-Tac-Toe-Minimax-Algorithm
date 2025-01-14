@@ -1,22 +1,20 @@
 
 public class Player 
 {
-    int playerNum;
-    bool isTurn
+    private int[] _moves;
+    public bool isTurn
     {
-        get;
-        set;
+        get { return isTurn; }
+        set { isTurn = value; }
     }
-    int[] moves 
+    public int[] moves 
     {
-        get;
-        set;
+        get { return _moves; }
+        set { _moves = value; }
     }
 
-    public Player(int index, bool starts) 
+    public Player() 
     {
-        playerNum = index;
-        isTurn = starts;
-        moves = new int[5];
+        _moves = new int[5];
     }
 }

@@ -5,21 +5,18 @@
 
 // app.Run();
 
-
-namespace TicTacToe 
+public class Program
 {
 
-    class Program 
+    static void Main(string[] args)
     {
-        
-        static void Main(string[] args) 
-        {
-            bool result = false;
-            
-            Player player1 = new Player(1, false);
-            Player player2 = new Player(2, true);
-            Game game = new Game(player1, player2);
-            Game.start();
-        }
+        bool player_1_starts = false;
+
+        Player player1 = new Player();
+        Player player2 = new Player();
+        Game game = new Game(player1, player2);
+
+        game.start();
+
     }
 }

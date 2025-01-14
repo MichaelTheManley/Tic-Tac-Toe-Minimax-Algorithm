@@ -1,3 +1,4 @@
+using System;
 
 class Game
 {
@@ -16,7 +17,7 @@ class Game
         player2 = p2;
     }
 
-    public static void start() 
+    public void start() 
     {
         System.Threading.Thread.Sleep(1000);
 
@@ -27,19 +28,58 @@ class Game
 
         System.Threading.Thread.Sleep(1000);
 
-        //Lambda expression for the slow typing
-        //Is Action type as it doesn't return anything
-        //Func returns of type specified by out
-        Action<string, int> slow_type = (sentence, time) => 
-        {
-            foreach (char c in sentence)
-            {
-                System.Threading.Thread.Sleep(time);
-                Console.Write(c);
-            }
-        };
+        player1.isTurn = rock_paper_scissors();
+        player2.isTurn = !player1.isTurn;
+    }
 
-        slow_type("Let the games begin...", 400);
-        slow_type("Player 1, do you choose Rock (R), Paper (P), or Scissors (S)?", 200);
+    public bool rock_paper_scissors()
+    {
+        bool player_1_wins = false;
+        var p1_input = "";
+        Console.Write("SYSTEM: ");
+        slow_type("We will begin the game by seeing who starts with Rock, Paper, Scissors.", 100);
+        Console.Write("SYSTEM: ");
+        slow_type("You may quit at any time by typing 'Q'.", 100);
+        Console.Write("SYSTEM: ");
+        slow_type("Player 1, choose your move!", 10);
+        Console.WriteLine("PLAYER 1: ");
+
+        do {
+            p1_input = Console.ReadLine();
+            if (p1_input == null) {p1_input = "";}
+            
+            if ((p1_input != "R") && (p1_input != "P") && (p1_input != "S") && (p1_input != "Q")) 
+            {
+                Console.Write("SYSTEM: ");
+                slow_type("Please enter either [R] => Rock, [P] => Paper or [S] => Scissors.", 100);
+                slow_type("PLAYER 1: ", 100);
+            }
+        } while ((p1_input != "R") && (p1_input != "P") && (p1_input != "S") && (p1_input != "Q"));
+
+        if (p1_input == "Q")
+        {
+            Console.Write("SYSTEM: ");
+            slow_type("Goodbye!", 100);
+            slow_type("and goodluck...", 400);
+            Environment.Exit(0);
+        }
+
+        Console.Write("SYSTEM: ");
+        slow_type("Player 2, choose your move!", 100);
+        Console.WriteLine("PLAYER 2: ");
+        
+
+        
+        return player_1_wins;
+    }
+
+    public static void slow_type(string sentence, int time)
+    {
+        foreach (char c in sentence)
+        {
+            System.Threading.Thread.Sleep(time);
+            Console.Write(c);
+        }
+        Console.WriteLine("");
     }
 }
