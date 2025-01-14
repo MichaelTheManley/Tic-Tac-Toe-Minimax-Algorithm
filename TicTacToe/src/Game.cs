@@ -34,12 +34,12 @@ class Game
 
     public bool rock_paper_scissors()
     {
+        int randInt;
         Random rand = new Random();
-        int randInt = rand.Next(3);
-
         bool retry;
         bool player_1_wins = false;
         var p1_input = "";
+
         Console.Write("SYSTEM: ");
         slow_type("We will begin Tic Tac Toe by seeing who will start. This is decided with Rock, Paper, Scissors.", 100);
         Console.Write("SYSTEM: ");
@@ -75,6 +75,7 @@ class Game
             Console.Write("SYSTEM: ");
             slow_type("Player 2, choose your move!", 100);
             Console.WriteLine("PLAYER 2: ");
+            randInt = rand.Next(3);
 
             switch (randInt)
             {
@@ -93,7 +94,7 @@ class Game
             }
 
             // Check for retry
-            if ((p1_input == "R" && randInt == 0) || (p1_input == "P" && randInt == 1) || (p1_input == "s" && randInt == 2))
+            if ((p1_input == "R" && randInt == 0) || (p1_input == "P" && randInt == 1) || (p1_input == "S" && randInt == 2))
             {
                 retry = true;
             } 
