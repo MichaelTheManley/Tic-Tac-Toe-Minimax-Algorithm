@@ -2,10 +2,11 @@
 public class Player 
 {
     private int[] _moves;
+    private bool _isTurn;
     public bool isTurn
     {
-        get { return isTurn; }
-        set { isTurn = value; }
+        get { return _isTurn; }
+        set { _isTurn = value; }
     }
     public int[] moves 
     {
