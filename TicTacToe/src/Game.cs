@@ -2,19 +2,21 @@ using System;
 
 class Game
 {
+    Player _player1;
+    Player _player2;
     Player player1
     {
-        get;
+        get { return _player1; }
     }
     Player player2
     {
-        get;
+        get { return _player2; }
     }
 
     public Game(Player p1, Player p2)
     {
-        player1 = p1;
-        player2 = p2;
+        _player1 = p1;
+        _player2 = p2;
     }
 
     public void start()

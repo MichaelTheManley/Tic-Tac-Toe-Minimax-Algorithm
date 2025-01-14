@@ -1,8 +1,8 @@
 
 public class Player 
 {
-    private int[] _moves;
-    private bool _isTurn;
+    int[] _moves;
+    bool _isTurn;
     public bool isTurn
     {
         get { return _isTurn; }
