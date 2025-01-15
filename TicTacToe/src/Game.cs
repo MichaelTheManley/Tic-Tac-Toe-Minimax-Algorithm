@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 
 class Game
 {
@@ -32,9 +33,51 @@ class Game
 
         player1.isTurn = rock_paper_scissors();
         player2.isTurn = !player1.isTurn;
+
+        initiate_toe();
     }
 
-    public bool rock_paper_scissors()
+    void initiate_toe()
+    {
+        bool winner = false;
+        string p1_move = "";
+
+        while (!winner)
+        {
+            if (player1.isTurn)
+            {
+                p1_move = get_player1_move();
+            }
+        }
+    }
+
+    string get_player1_move()
+    {
+        var move = "";
+        string pattern = @"^[123456789]$";
+        Regex regex = new Regex(pattern);
+        bool invalid = true;
+
+        do
+        {
+            Console.Write("SYSTEM: ");
+            slow_type("Player 1, which tile do you choose? [1-9]", 100);
+
+            move = Console.ReadLine();
+            if (move == null) { move = ""; }
+
+            Match match = regex.Match(move);
+
+            if (match.Success) 
+            {
+                invalid = false;
+            }
+        } while (invalid);
+
+        return move;
+    }
+
+    bool rock_paper_scissors()
     {
         int randInt;
         Random rand = new Random();
@@ -81,32 +124,36 @@ class Game
 
             switch (randInt)
             {
-                case 0:     slow_type("Rock!", 150);
-                            break;
+                case 0:
+                    slow_type("Rock!", 150);
+                    break;
 
-                case 1:     slow_type("Paper!", 150);
-                            break;
-                            
-                case 2:     slow_type("Scissors!", 150);
-                            break;
+                case 1:
+                    slow_type("Paper!", 150);
+                    break;
 
-                default:    Console.Write("ERROR!");
-                            Environment.Exit(0);
-                            break;
+                case 2:
+                    slow_type("Scissors!", 150);
+                    break;
+
+                default:
+                    Console.Write("ERROR!");
+                    Environment.Exit(0);
+                    break;
             }
 
             // Check for retry
             if ((p1_input == "R" && randInt == 0) || (p1_input == "P" && randInt == 1) || (p1_input == "S" && randInt == 2))
             {
                 retry = true;
-            } 
+            }
             else if (p1_input == "R")
             {
                 if (randInt == 1)
                 {
                     player_1_wins = false;
-                } 
-                else if (randInt == 2) 
+                }
+                else if (randInt == 2)
                 {
                     player_1_wins = true;
                 }
@@ -116,8 +163,8 @@ class Game
                 if (randInt == 0)
                 {
                     player_1_wins = true;
-                } 
-                else if (randInt == 2) 
+                }
+                else if (randInt == 2)
                 {
                     player_1_wins = false;
                 }
@@ -127,20 +174,20 @@ class Game
                 if (randInt == 0)
                 {
                     player_1_wins = false;
-                } 
-                else if (randInt == 1) 
+                }
+                else if (randInt == 1)
                 {
                     player_1_wins = true;
                 }
             }
-            
+
         } while (retry);
 
         Console.Write("SYSTEM: ");
-        if (player_1_wins) 
+        if (player_1_wins)
         {
             slow_type("Player 1 wins! They will start.", 100);
-        } 
+        }
         else
         {
             slow_type("Player 2 wins! They will start.", 100);
