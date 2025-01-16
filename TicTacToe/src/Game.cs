@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using System.Windows.Markup;
 
 class Game
 {
@@ -140,8 +141,8 @@ class Game
         else if (maximizing_player)
         {
             maxEval = -100000;
-            game_moves[pos-1] = 1; //Temporarily set their move on board
-            for (int i = 1; i < 10; i++) 
+            game_moves[pos - 1] = 1; //Temporarily set their move on board
+            for (int i = 1; i < 10; i++)
             {
                 if (check_available(i)) //First check if a move can be played at the position
                 {
@@ -149,14 +150,14 @@ class Game
                     maxEval = value > maxEval ? value : maxEval;
                 }
             }
-            game_moves[pos-1] = 0; //Revert move back
+            game_moves[pos - 1] = 0; //Revert move back
             return maxEval;
         }
         else
         {
             minEval = 100000;
-            game_moves[pos-1] = 2; //Temporarily set their move on board
-            for (int i = 1; i < 10; i++) 
+            game_moves[pos - 1] = 2; //Temporarily set their move on board
+            for (int i = 1; i < 10; i++)
             {
                 if (check_available(i)) //First check if a move can be played at the position
                 {
@@ -164,7 +165,7 @@ class Game
                     minEval = value < minEval ? value : minEval;
                 }
             }
-            game_moves[pos-1] = 0; //Revert move back
+            game_moves[pos - 1] = 0; //Revert move back
             return minEval;
         }
     }
@@ -175,7 +176,58 @@ class Game
     /// <returns>The value of the board, where a high number favours p2, and a low number favours p1.</returns>
     int evaluate()
     {
+        //Credit to https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+
         int value = 0;
+
+        value = check_columns(true) + check_columns(false);
+
+        return value;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="player1"></param>
+    /// <returns></returns>
+    int check_columns(bool player1)
+    {
+        int value = 0;
+        int[] count = new int[3];
+        int match = player1 ? 1 : 2;
+
+        for (int j = 0; j < 3; j++)
+        {
+            for (int i = 1; i < 4; i++)
+            {
+                if (game_moves[i + (j * 3) - 1] == match)
+                {
+                    count[j] += 1;
+                }
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            switch (count[i])
+            {
+                case 0:
+                    value += 0;
+                    break;
+
+                case 1:
+                    value += 1;
+                    break;
+
+                case 2:
+                    value += 10;
+                    break;
+
+                case 3:
+                    value += 100;
+                    break;
+            }
+        }
 
         return value;
     }
