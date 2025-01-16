@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 
 class Game
 {
+    int[] game_moves;
     Player _player1;
     Player _player2;
     Player player1
@@ -18,6 +19,7 @@ class Game
     {
         _player1 = p1;
         _player2 = p2;
+        game_moves = new int[9];
     }
 
     public void start()
@@ -40,18 +42,26 @@ class Game
     void initiate_toe()
     {
         bool winner = false;
-        string p1_move = "";
+        int p1_move = 0;
+        int p2_move = 0;
 
         while (!winner)
         {
             if (player1.isTurn)
             {
                 p1_move = get_player1_move();
+
             }
+            else
+            {
+                p2_move = get_player2_move();
+            }
+            player1.isTurn = !player1.isTurn;
+            player2.isTurn = !player2.isTurn;
         }
     }
 
-    string get_player1_move()
+    int get_player1_move()
     {
         var move = "";
         string pattern = @"^[123456789]$";
@@ -68,15 +78,100 @@ class Game
 
             Match match = regex.Match(move);
 
-            if (match.Success) 
+            if (match.Success)
             {
-                invalid = false;
+                if (check_available(int.Parse(move)))
+                {
+                    invalid = false;
+                }
+                else
+                {
+                    Console.Write("SYSTEM: ");
+                    slow_type("Invalid move, position taken. Please select another.", 100);
+                }
             }
         } while (invalid);
+
+        return int.Parse(move);
+    }
+
+    int get_player2_move()
+    {
+        string pattern = @"^[123456789]$";
+        Regex regex = new Regex(pattern);
+        bool invalid = true;
+        int chosen_move = 0;
+
+        do
+        {
+            Console.Write("SYSTEM: ");
+            slow_type("Player 2, which tile do you choose? [1-9]", 100);
+
+            for (int i = 1; i < 10; i++)
+            {
+                chosen_move = minimax(i, 3, true);
+            }
+
+        } while (invalid);
+
+        return chosen_move;
+    }
+
+    int minimax(int pos, int depth, bool maximising_player)
+    {
+        int move = 0;
+        //int value = 0;
+
+        if (depth == 0)
+        {
+            return pos;
+        }
+        else if (maximising_player)
+        {
+
+        }
+        else
+        {
+
+        }
 
         return move;
     }
 
+    /// <summary>
+    /// Method <c>evaluate</c> evaluates the value of making a move at this point, for the given player.
+    /// </summary>
+    /// <param name="move">The chosen move.</param>
+    /// <param name="player1">True if player1, false if player2.</param>
+    /// <returns>The value of making a move at this point for the given player.</returns>
+    int evaluate(int move, bool player1)
+    {
+        int value = 0;
+
+        return value;
+    }
+
+    /// <summary>
+    /// Method checks the availability of the given move.
+    /// </summary>
+    /// <param name="move">The chosen move of the player to be checked.</param>
+    /// <returns>true if available; false otherwise.</returns>
+    bool check_available(int move)
+    {
+        if (game_moves[move - 1] == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Method <c>rock_paper_scissors</c> Facilitates a game of rock, paper, scissors between the two players.
+    /// </summary>
+    /// <returns>True if player1 wins, false if player2 wins.</returns>
     bool rock_paper_scissors()
     {
         int randInt;
