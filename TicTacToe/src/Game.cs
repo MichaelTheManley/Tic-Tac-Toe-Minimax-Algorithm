@@ -100,7 +100,9 @@ class Game
         string pattern = @"^[123456789]$";
         Regex regex = new Regex(pattern);
         bool invalid = true;
-        int chosen_move = 0;
+        int chosen_move_value = 0;
+        int best_move_value = -100000;
+        int best_move = 0;
 
         do
         {
@@ -111,25 +113,29 @@ class Game
             {
                 if (check_available(i)) //First check if a move can be played at the position
                 {
-                    chosen_move = minimax(i, 1, true);
+                    chosen_move_value = minimax(i, 2, true);
+                    if (chosen_move_value > best_move_value)
+                    {
+                        best_move_value = chosen_move_value;
+                        best_move = i;
+                    }
                 }
             }
 
         } while (invalid);
 
-        return chosen_move;
+        return best_move;
     }
 
     int minimax(int pos, int depth, bool maximizing_player)
     {
-        int move = 0;
-        int value = 0;
+        int value;
         int maxEval;
         int minEval;
 
         if (depth == 0)
         {
-            return pos;
+            return evaluate(); //Maximizing player is player 2, thus pass through the NOT of it for player1.
         }
         else if (maximizing_player)
         {
@@ -139,11 +145,12 @@ class Game
             {
                 if (check_available(i)) //First check if a move can be played at the position
                 {
-                    
+                    value = minimax(i, depth - 1, false);
+                    maxEval = value > maxEval ? value : maxEval;
                 }
             }
-
             game_moves[pos-1] = 0; //Revert move back
+            return maxEval;
         }
         else
         {
@@ -153,23 +160,20 @@ class Game
             {
                 if (check_available(i)) //First check if a move can be played at the position
                 {
-
+                    value = minimax(i, depth - 1, true);
+                    minEval = value < minEval ? value : minEval;
                 }
             }
-
             game_moves[pos-1] = 0; //Revert move back
+            return minEval;
         }
-
-        return move;
     }
 
     /// <summary>
-    /// Method <c>evaluate</c> evaluates the value of making a move at this point, for the given player.
+    /// Method <c>evaluate</c> evaluates the value of the board.
     /// </summary>
-    /// <param name="move">The chosen move.</param>
-    /// <param name="player1">True if player1, false if player2.</param>
-    /// <returns>The value of making a move at this point for the given player.</returns>
-    int evaluate(int move, bool player1)
+    /// <returns>The value of the board, where a high number favours p2, and a low number favours p1.</returns>
+    int evaluate()
     {
         int value = 0;
 
