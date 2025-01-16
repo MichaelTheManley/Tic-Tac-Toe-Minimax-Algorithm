@@ -117,6 +117,10 @@ class Game
         return int.Parse(move);
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <returns></returns>
     int get_player2_move()
     {
         string pattern = @"^[123456789]$";
@@ -435,6 +439,11 @@ class Game
         return player_1_wins;
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="sentence"></param>
+    /// <param name="time"></param>
     static void slow_type(string sentence, int time)
     {
         foreach (char c in sentence)
