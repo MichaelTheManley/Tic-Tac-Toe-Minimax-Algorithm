@@ -180,53 +180,85 @@ class Game
 
         int value = 0;
 
-        value += check_columns(false) - check_columns(true); //Subtract p1's as p1 is minimizing.
-        
+        value += check_all(false) - check_all(true); //Subtract p1's as p1 is minimizing.
 
         return value;
     }
 
     /// <summary>
-    /// 
+    /// Method <c>check_all</c> checks all rows, columns and diagonals for the given player and returns the value of their board
+    /// by assigning 100 points for any 3 in a row, column or diagonal, 10 points for any 2, and 1 point for any 1.
     /// </summary>
-    /// <param name="player1"></param>
-    /// <returns></returns>
-    int check_columns(bool player1)
+    /// <param name="player1">The player the method is checking and evaluating for.</param>
+    /// <returns>The value of the player's board.</returns>
+    int check_all(bool player1)
     {
         int value = 0;
-        int[] count = new int[3];
+        int[,] count = new int[3, 3];
         int match = player1 ? 1 : 2;
 
-        for (int j = 0; j < 3; j++)
+        // Checking rows
+        for (int i = 0; i < 3; i++) //Row
         {
-            for (int i = 1; i < 4; i++)
+            for (int j = 0; j < 3; j++) //Column
             {
-                if (game_moves[i + (j * 3) - 1] == match)
+                if (game_moves[i * 3 + j] == match)
                 {
-                    count[j] += 1;
+                    count[0, i] += 1;
                 }
+            }
+        }
+
+        // Checking columns
+        for (int i = 0; i < 3; i++) //Column
+        {
+            for (int j = 0; j < 3; j++) //Row
+            {
+                if (game_moves[i + j * 3] == match)
+                {
+                    count[1, i] += 1;
+                }
+            }
+        }
+
+        // Checking diagonals
+        for (int i = 0; i < 3; i++) //Check right diagonal
+        {
+            if (game_moves[i * 3 + i] == match)
+            {
+                count[2, 0] += 1;
+            }
+        }
+        for (int i = 0; i < 3; i++) //Check left diagonal
+        {
+            if (game_moves[6 - i * 2] == match)
+            {
+                count[2, 1] += 1;
             }
         }
 
         for (int i = 0; i < 3; i++)
         {
-            switch (count[i])
+            for (int j = 0; j < 3; j++)
             {
-                case 0:
-                    value += 0;
-                    break;
+                switch (count[i, j])
+                {
+                    case 0:
+                        value += 0;
+                        break;
 
-                case 1:
-                    value += 1;
-                    break;
+                    case 1:
+                        value += 1;
+                        break;
 
-                case 2:
-                    value += 10;
-                    break;
+                    case 2:
+                        value += 10;
+                        break;
 
-                case 3:
-                    value += 100;
-                    break;
+                    case 3:
+                        value += 100;
+                        break;
+                }
             }
         }
 
