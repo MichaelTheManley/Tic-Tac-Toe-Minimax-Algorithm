@@ -180,7 +180,8 @@ class Game
 
         int value = 0;
 
-        value = check_columns(true) + check_columns(false);
+        value += check_columns(false) - check_columns(true); //Subtract p1's as p1 is minimizing.
+        
 
         return value;
     }
