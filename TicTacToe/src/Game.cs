@@ -109,7 +109,10 @@ class Game
 
             for (int i = 1; i < 10; i++)
             {
-                chosen_move = minimax(i, 3, true);
+                if (check_available(i)) //First check if a move can be played at the position
+                {
+                    chosen_move = minimax(i, 1, true);
+                }
             }
 
         } while (invalid);
@@ -117,22 +120,44 @@ class Game
         return chosen_move;
     }
 
-    int minimax(int pos, int depth, bool maximising_player)
+    int minimax(int pos, int depth, bool maximizing_player)
     {
         int move = 0;
-        //int value = 0;
+        int value = 0;
+        int maxEval;
+        int minEval;
 
         if (depth == 0)
         {
             return pos;
         }
-        else if (maximising_player)
+        else if (maximizing_player)
         {
+            maxEval = -100000;
+            game_moves[pos-1] = 1; //Temporarily set their move on board
+            for (int i = 1; i < 10; i++) 
+            {
+                if (check_available(i)) //First check if a move can be played at the position
+                {
+                    
+                }
+            }
 
+            game_moves[pos-1] = 0; //Revert move back
         }
         else
         {
+            minEval = 100000;
+            game_moves[pos-1] = 2; //Temporarily set their move on board
+            for (int i = 1; i < 10; i++) 
+            {
+                if (check_available(i)) //First check if a move can be played at the position
+                {
 
+                }
+            }
+
+            game_moves[pos-1] = 0; //Revert move back
         }
 
         return move;
