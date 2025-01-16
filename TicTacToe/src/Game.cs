@@ -2,8 +2,14 @@ using System;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
 
+/// <summary>
+/// TODO
+/// </summary>
 class Game
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     int[] game_moves;
     Player _player1;
     Player _player2;
@@ -16,6 +22,11 @@ class Game
         get { return _player2; }
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     public Game(Player p1, Player p2)
     {
         _player1 = p1;
@@ -23,6 +34,9 @@ class Game
         game_moves = new int[9];
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
     public void start()
     {
         System.Threading.Thread.Sleep(1000);
@@ -40,6 +54,9 @@ class Game
         initiate_toe();
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
     void initiate_toe()
     {
         bool winner = false;
@@ -62,6 +79,10 @@ class Game
         }
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <returns></returns>
     int get_player1_move()
     {
         var move = "";
@@ -128,6 +149,13 @@ class Game
         return best_move;
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="depth"></param>
+    /// <param name="maximizing_player"></param>
+    /// <returns></returns>
     int minimax(int pos, int depth, bool maximizing_player)
     {
         int value;
@@ -169,6 +197,8 @@ class Game
             return minEval;
         }
     }
+
+    // TODO Test evaluate
 
     /// <summary>
     /// Method <c>evaluate</c> evaluates the value of the board.

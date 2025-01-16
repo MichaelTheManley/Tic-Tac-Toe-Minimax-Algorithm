@@ -5,9 +5,16 @@
 
 // app.Run();
 
+
+/// <summary>
+/// TODO
+/// </summary>
 public class Program
 {
-
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="args"></param>
     static void Main(string[] args)
     {
         Player player1 = new Player();
