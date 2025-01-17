@@ -75,5 +75,22 @@ namespace TicTacToe.Tests
 
             Assert.False(taken);
         }
+
+        /// <summary>
+        /// Method <c>Test5</c> tests the <c>minimax</c> method.
+        /// </summary>
+        [Fact]
+        public void Test5()
+        {
+            int bestMove = 0;
+            Player player1 = new Player();
+            player1.isTurn = true;
+            Player player2 = new Player();
+            Game game = new Game(player1, player2);
+
+            bestMove = game.test_minimax();
+
+            Assert.Equal(2, bestMove);
+        }
     }
 }

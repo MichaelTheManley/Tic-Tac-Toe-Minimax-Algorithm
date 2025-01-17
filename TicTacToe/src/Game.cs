@@ -10,6 +10,7 @@ class Game
     /// <summary>
     /// TODO
     /// </summary>
+    //private readonly Logger _logger = new Logger();
     int[] game_moves;
     Player _player1;
     Player _player2;
@@ -166,7 +167,7 @@ class Game
         else if (maximizing_player)
         {
             maxEval = -100000;
-            game_moves[pos - 1] = 1; //Temporarily set their move on board
+            game_moves[pos - 1] = 2; //Temporarily set the AI on board
             for (int i = 1; i < 10; i++)
             {
                 if (check_available(i)) //First check if a move can be played at the position
@@ -181,7 +182,7 @@ class Game
         else
         {
             minEval = 100000;
-            game_moves[pos - 1] = 2; //Temporarily set their move on board
+            game_moves[pos - 1] = 1; //Temporarily set their move on board
             for (int i = 1; i < 10; i++)
             {
                 if (check_available(i)) //First check if a move can be played at the position
@@ -378,6 +379,28 @@ class Game
         game_moves[5] = 1;
         return check_available(6);
     } 
+
+    /// <summary>
+    /// Method <c>test_minimax</c> is used by the testing class to test the minimax method.
+    /// </summary>
+    /// <returns>The position chosen by the AI.</returns>
+    public int test_minimax()
+    {
+        int pos = 0;
+        game_moves[0] = 1;
+        game_moves[1] = 0;
+        game_moves[2] = 1;
+        game_moves[3] = 2;
+
+        pos = get_player2_move();
+
+        game_moves[0] = 0;
+        game_moves[1] = 0;
+        game_moves[2] = 0;
+        game_moves[3] = 0;
+
+        return pos;
+    }
 
     /// <summary>
     /// Method checks the availability of the given move.
