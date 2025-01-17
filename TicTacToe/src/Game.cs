@@ -123,32 +123,25 @@ class Game
     /// <returns></returns>
     int get_player2_move()
     {
-        string pattern = @"^[123456789]$";
-        Regex regex = new Regex(pattern);
-        bool invalid = true;
         int chosen_move_value = 0;
         int best_move_value = -100000;
         int best_move = 0;
 
-        do
-        {
-            Console.Write("SYSTEM: ");
-            slow_type("Player 2, which tile do you choose? [1-9]", 100);
+        Console.Write("SYSTEM: ");
+        slow_type("Player 2, which tile do you choose? [1-9]", 100);
 
-            for (int i = 1; i < 10; i++)
+        for (int i = 1; i < 10; i++)
+        {
+            if (check_available(i)) //First check if a move can be played at the position
             {
-                if (check_available(i)) //First check if a move can be played at the position
+                chosen_move_value = minimax(i, 2, true);
+                if (chosen_move_value > best_move_value)
                 {
-                    chosen_move_value = minimax(i, 2, true);
-                    if (chosen_move_value > best_move_value)
-                    {
-                        best_move_value = chosen_move_value;
-                        best_move = i;
-                    }
+                    best_move_value = chosen_move_value;
+                    best_move = i;
                 }
             }
-
-        } while (invalid);
+        }
 
         return best_move;
     }
@@ -297,6 +290,62 @@ class Game
         }
 
         return value;
+    }
+
+    /// <summary>
+    /// Method <c>test_values_player1</c> is used by the testing class to test the evaluate method.
+    /// </summary>
+    public int test_values_player1()
+    {
+        int total = 0;
+        game_moves[0] = 1;
+        game_moves[1] = 1;
+        game_moves[2] = 1;
+        game_moves[3] = 2;
+        game_moves[4] = 2;
+        game_moves[5] = 2;
+        game_moves[6] = 1;
+        game_moves[7] = 2;
+        game_moves[8] = 1;
+        total = check_all(true);
+        game_moves[0] = 0;
+        game_moves[1] = 0;
+        game_moves[2] = 0;
+        game_moves[3] = 0;
+        game_moves[4] = 0;
+        game_moves[5] = 0;
+        game_moves[6] = 0;
+        game_moves[7] = 0;
+        game_moves[8] = 0;
+        return total;
+    }
+
+    /// <summary>
+    /// Method <c>test_values_player2</c> is used by the testing class to test the evaluate method.
+    /// </summary>
+    public int test_values_player2()
+    {
+        int total = 0;
+        game_moves[0] = 1;
+        game_moves[1] = 1;
+        game_moves[2] = 1;
+        game_moves[3] = 2;
+        game_moves[4] = 2;
+        game_moves[5] = 2;
+        game_moves[6] = 1;
+        game_moves[7] = 2;
+        game_moves[8] = 1;
+        total = check_all(false);
+        game_moves[0] = 0;
+        game_moves[1] = 0;
+        game_moves[2] = 0;
+        game_moves[3] = 0;
+        game_moves[4] = 0;
+        game_moves[5] = 0;
+        game_moves[6] = 0;
+        game_moves[7] = 0;
+        game_moves[8] = 0;
+        return total;
     }
 
     /// <summary>
