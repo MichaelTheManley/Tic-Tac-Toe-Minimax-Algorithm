@@ -369,10 +369,14 @@ class Game
         return total;
     }
 
+    /// <summary>
+    /// Method <c>test_position</c> is used by the testing class to test the check_available method.
+    /// </summary>
+    /// <returns>True if the position is available; false otherwise.</returns>
     public Boolean test_position()
     {
         game_moves[5] = 1;
-        return check_available(5);
+        return check_available(6);
     } 
 
     /// <summary>

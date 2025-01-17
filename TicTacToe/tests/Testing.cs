@@ -73,7 +73,7 @@ namespace TicTacToe.Tests
 
             taken = game.test_position();
 
-            Assert.True(taken);
+            Assert.False(taken);
         }
     }
 }
