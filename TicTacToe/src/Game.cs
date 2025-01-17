@@ -295,6 +295,7 @@ class Game
     /// <summary>
     /// Method <c>test_values_player1</c> is used by the testing class to test the evaluate method.
     /// </summary>
+    /// <returns>The value of the board.</returns>
     public int test_values_player1()
     {
         int total = 0;
@@ -323,6 +324,7 @@ class Game
     /// <summary>
     /// Method <c>test_values_player2</c> is used by the testing class to test the evaluate method.
     /// </summary>
+    /// <returns>The value of the board.</returns>
     public int test_values_player2()
     {
         int total = 0;
@@ -351,7 +353,7 @@ class Game
     /// <summary>
     /// Method <c>simulate_player1_winning</c> is used by the testing class to test the evaluate method.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The value of the board after simulating a winning position for player 1.</returns>
     public int simulate_player1_winning()
     {
         int total = 0;
@@ -366,6 +368,12 @@ class Game
         game_moves[3] = 0;
         return total;
     }
+
+    public Boolean test_position()
+    {
+        game_moves[5] = 1;
+        return check_available(5);
+    } 
 
     /// <summary>
     /// Method checks the availability of the given move.

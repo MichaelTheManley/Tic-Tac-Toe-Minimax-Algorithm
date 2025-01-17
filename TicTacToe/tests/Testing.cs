@@ -58,5 +58,22 @@ namespace TicTacToe.Tests
 
             Assert.Equal(-12, player1_total);
         }
+
+        /// <summary>
+        /// Method <c>Test4</c> tests the <c>check_available</c> method.
+        /// </summary>
+        [Fact]
+        public void Test4()
+        {
+            Boolean taken = false;
+            Player player1 = new Player();
+            player1.isTurn = true;
+            Player player2 = new Player();
+            Game game = new Game(player1, player2);
+
+            taken = game.test_position();
+
+            Assert.True(taken);
+        }
     }
 }
