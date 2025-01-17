@@ -1,6 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
+using TicTacToe.Utils;
 
 /// <summary>
 /// TODO
@@ -10,7 +11,7 @@ class Game
     /// <summary>
     /// TODO
     /// </summary>
-    //private readonly Logger _logger = new Logger();
+    private readonly Logger _logger;
     int[] game_moves;
     Player _player1;
     Player _player2;
@@ -33,6 +34,7 @@ class Game
         _player1 = p1;
         _player2 = p2;
         game_moves = new int[9];
+        _logger = new Logger();
     }
 
     /// <summary>
@@ -136,6 +138,7 @@ class Game
             if (check_available(i)) //First check if a move can be played at the position
             {
                 chosen_move_value = minimax(i, 2, true);
+                _logger.LogPotentialMove(i, chosen_move_value);
                 if (chosen_move_value > best_move_value)
                 {
                     best_move_value = chosen_move_value;
