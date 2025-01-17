@@ -41,5 +41,22 @@ namespace TicTacToe.Tests
 
             Assert.Equal(115, player2_total);
         }
+
+        /// <summary>
+        /// Method <c>Test3</c> tests the <c>simulate_player1_winning</c> method.
+        /// </summary>
+        [Fact]
+        public void Test3()
+        {
+            int player1_total = 0;
+            Player player1 = new Player();
+            player1.isTurn = true;
+            Player player2 = new Player();
+            Game game = new Game(player1, player2);
+
+            player1_total = game.simulate_player1_winning();
+
+            Assert.Equal(-12, player1_total);
+        }
     }
 }

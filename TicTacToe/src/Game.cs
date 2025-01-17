@@ -349,6 +349,25 @@ class Game
     }
 
     /// <summary>
+    /// Method <c>simulate_player1_winning</c> is used by the testing class to test the evaluate method.
+    /// </summary>
+    /// <returns></returns>
+    public int simulate_player1_winning()
+    {
+        int total = 0;
+        game_moves[0] = 1;
+        game_moves[1] = 0;
+        game_moves[2] = 1;
+        game_moves[3] = 2;
+        total = evaluate();
+        game_moves[0] = 0;
+        game_moves[1] = 0;
+        game_moves[2] = 0;
+        game_moves[3] = 0;
+        return total;
+    }
+
+    /// <summary>
     /// Method checks the availability of the given move.
     /// </summary>
     /// <param name="move">The chosen move of the player to be checked.</param>
