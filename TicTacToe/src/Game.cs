@@ -11,7 +11,7 @@ class Game
     /// <summary>
     /// TODO
     /// </summary>
-    private readonly Logger _logger;
+    private readonly Logger _logger = new Logger();
     int[] game_moves;
     Player _player1;
     Player _player2;
@@ -34,7 +34,7 @@ class Game
         _player1 = p1;
         _player2 = p2;
         game_moves = new int[9];
-        _logger = new Logger();
+        //_logger = new Logger();
     }
 
     /// <summary>
@@ -137,8 +137,10 @@ class Game
         {
             if (check_available(i)) //First check if a move can be played at the position
             {
-                chosen_move_value = minimax(i, 2, true);
-                _logger.LogPotentialMove(i, chosen_move_value);
+                chosen_move_value = minimax(i, 3, false); //Since we are doing an iteration initially within this code block, we must set the
+                                                          //maximizing player to false as the AI is initially making a move here. Thus, it will
+                                                          //be the minimizing player to play next and so we pass through false (since player
+                                                          //1 is the minimizing player and player 2 is the AI [maximizing player]).
                 if (chosen_move_value > best_move_value)
                 {
                     best_move_value = chosen_move_value;
@@ -165,19 +167,31 @@ class Game
 
         if (depth == 0)
         {
-            return evaluate(); //Maximizing player is player 2, thus pass through the NOT of it for player1.
+            return evaluate();
         }
         else if (maximizing_player)
         {
             maxEval = -100000;
-            game_moves[pos - 1] = 2; //Temporarily set the AI on board
-            for (int i = 1; i < 10; i++)
+            game_moves[pos - 1] = 1; //Temporarily set the AI on board
+
+            if (depth == 1) //This removes unnecessary recursion
             {
-                if (check_available(i)) //First check if a move can be played at the position
+                value = minimax(1, depth - 1, false);
+                maxEval = value > maxEval ? value : maxEval;
+                _logger.PrintBoard(game_moves);
+                _logger.PrintLine();
+            }
+            else
+            {
+                for (int i = 1; i < 10; i++)
                 {
-                    value = minimax(i, depth - 1, false);
-                    maxEval = value > maxEval ? value : maxEval;
+                    if (check_available(i)) //First check if a move can be played at the position
+                    {
+                        value = minimax(i, depth - 1, false);
+                        maxEval = value > maxEval ? value : maxEval;
+                    }
                 }
+                _logger.LogBestMove(2, pos, maxEval);
             }
             game_moves[pos - 1] = 0; //Revert move back
             return maxEval;
@@ -185,21 +199,31 @@ class Game
         else
         {
             minEval = 100000;
-            game_moves[pos - 1] = 1; //Temporarily set their move on board
-            for (int i = 1; i < 10; i++)
+            game_moves[pos - 1] = 2; //Temporarily set their move on board
+
+            if (depth == 1) //This removes unnecessary recursion
             {
-                if (check_available(i)) //First check if a move can be played at the position
+                value = minimax(1, depth - 1, true);
+                minEval = value < minEval ? value : minEval;
+                _logger.PrintBoard(game_moves);
+                _logger.PrintLine();
+            }
+            else
+            {
+                for (int i = 1; i < 10; i++)
                 {
-                    value = minimax(i, depth - 1, true);
-                    minEval = value < minEval ? value : minEval;
+                    if (check_available(i)) //First check if a move can be played at the position
+                    {
+                        value = minimax(i, depth - 1, true);
+                        minEval = value < minEval ? value : minEval;
+                    }
                 }
+                _logger.LogBestMove(1, pos, minEval);
             }
             game_moves[pos - 1] = 0; //Revert move back
             return minEval;
         }
     }
-
-    // TODO Test evaluate
 
     /// <summary>
     /// Method <c>evaluate</c> evaluates the value of the board.
@@ -381,7 +405,7 @@ class Game
     {
         game_moves[5] = 1;
         return check_available(6);
-    } 
+    }
 
     /// <summary>
     /// Method <c>test_minimax</c> is used by the testing class to test the minimax method.

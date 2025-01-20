@@ -50,5 +50,50 @@ namespace TicTacToe.Utils
                 throw;
             }
         }
+
+        public void LogBestMove(int player_num, int position, int score)
+        {
+            try
+            {
+                string logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Best score for player {player_num} after position {position} played => Score: {score}";
+                File.AppendAllText(logPath, logMessage + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Logging error: {ex}");
+                throw;
+            }
+        }
+
+        public void PrintBoard(int[] game_moves)
+        {
+            try
+            {
+                string board = $" {game_moves[0]} | {game_moves[1]} | {game_moves[2]} \n" +
+                            $"---|---|---\n" +
+                            $" {game_moves[3]} | {game_moves[4]} | {game_moves[5]} \n" +
+                            $"---|---|---\n" +
+                            $" {game_moves[6]} | {game_moves[7]} | {game_moves[8]} ";
+                File.AppendAllText(logPath, board + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Logging error: {ex}");
+                throw;
+            }
+        }
+
+        public void PrintLine()
+        {
+            try
+            {
+                File.AppendAllText(logPath, "-----------------------------------" + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Logging error: {ex}");
+                throw;
+            }
+        }
     }
 }
