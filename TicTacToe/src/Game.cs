@@ -12,7 +12,13 @@ class Game
     /// TODO
     /// </summary>
     private readonly Logger _logger = new Logger();
-    int[] game_moves;
+
+    private int[] _game_moves = new int[9];
+    public int[] game_moves
+    {
+        get { return _game_moves; }
+        set { _game_moves = value; }
+    }
     Player _player1;
     Player _player2;
     Player player1
@@ -33,8 +39,6 @@ class Game
     {
         _player1 = p1;
         _player2 = p2;
-        game_moves = new int[9];
-        //_logger = new Logger();
     }
 
     /// <summary>
@@ -124,7 +128,7 @@ class Game
     /// TODO
     /// </summary>
     /// <returns></returns>
-    int get_player2_move()
+    public int get_player2_move()
     {
         int chosen_move_value = 0;
         int best_move_value = -100000;
@@ -173,8 +177,11 @@ class Game
         {
             maxEval = -100000;
             game_moves[pos - 1] = 1; //Temporarily set the AI on board
-
-            if (depth == 1) //This removes unnecessary recursion
+            if (check_win())
+            {
+                return evaluate();
+            }
+            else if (depth == 1) //This removes unnecessary recursion
             {
                 value = minimax(1, depth - 1, false);
                 maxEval = value > maxEval ? value : maxEval;
@@ -201,7 +208,11 @@ class Game
             minEval = 100000;
             game_moves[pos - 1] = 2; //Temporarily set their move on board
 
-            if (depth == 1) //This removes unnecessary recursion
+            if (check_win())
+            {
+                return evaluate();
+            }
+            else if (depth == 1) //This removes unnecessary recursion
             {
                 value = minimax(1, depth - 1, true);
                 minEval = value < minEval ? value : minEval;
@@ -229,7 +240,7 @@ class Game
     /// Method <c>evaluate</c> evaluates the value of the board.
     /// </summary>
     /// <returns>The value of the board, where a high number favours p2, and a low number favours p1.</returns>
-    int evaluate()
+    public int evaluate()
     {
         //Credit to https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
 
@@ -246,7 +257,7 @@ class Game
     /// </summary>
     /// <param name="player1">The player the method is checking and evaluating for.</param>
     /// <returns>The value of the player's board.</returns>
-    int check_all(bool player1)
+    public int check_all(bool player1)
     {
         int value = 0;
         int[,] count = new int[3, 3];
@@ -321,120 +332,11 @@ class Game
     }
 
     /// <summary>
-    /// Method <c>test_values_player1</c> is used by the testing class to test the evaluate method.
-    /// </summary>
-    /// <returns>The value of the board.</returns>
-    public int test_values_player1()
-    {
-        int total = 0;
-        game_moves[0] = 1;
-        game_moves[1] = 1;
-        game_moves[2] = 1;
-        game_moves[3] = 2;
-        game_moves[4] = 2;
-        game_moves[5] = 2;
-        game_moves[6] = 1;
-        game_moves[7] = 2;
-        game_moves[8] = 1;
-        total = check_all(true);
-        game_moves[0] = 0;
-        game_moves[1] = 0;
-        game_moves[2] = 0;
-        game_moves[3] = 0;
-        game_moves[4] = 0;
-        game_moves[5] = 0;
-        game_moves[6] = 0;
-        game_moves[7] = 0;
-        game_moves[8] = 0;
-        return total;
-    }
-
-    /// <summary>
-    /// Method <c>test_values_player2</c> is used by the testing class to test the evaluate method.
-    /// </summary>
-    /// <returns>The value of the board.</returns>
-    public int test_values_player2()
-    {
-        int total = 0;
-        game_moves[0] = 1;
-        game_moves[1] = 1;
-        game_moves[2] = 1;
-        game_moves[3] = 2;
-        game_moves[4] = 2;
-        game_moves[5] = 2;
-        game_moves[6] = 1;
-        game_moves[7] = 2;
-        game_moves[8] = 1;
-        total = check_all(false);
-        game_moves[0] = 0;
-        game_moves[1] = 0;
-        game_moves[2] = 0;
-        game_moves[3] = 0;
-        game_moves[4] = 0;
-        game_moves[5] = 0;
-        game_moves[6] = 0;
-        game_moves[7] = 0;
-        game_moves[8] = 0;
-        return total;
-    }
-
-    /// <summary>
-    /// Method <c>simulate_player1_winning</c> is used by the testing class to test the evaluate method.
-    /// </summary>
-    /// <returns>The value of the board after simulating a winning position for player 1.</returns>
-    public int simulate_player1_winning()
-    {
-        int total = 0;
-        game_moves[0] = 1;
-        game_moves[1] = 0;
-        game_moves[2] = 1;
-        game_moves[3] = 2;
-        total = evaluate();
-        game_moves[0] = 0;
-        game_moves[1] = 0;
-        game_moves[2] = 0;
-        game_moves[3] = 0;
-        return total;
-    }
-
-    /// <summary>
-    /// Method <c>test_position</c> is used by the testing class to test the check_available method.
-    /// </summary>
-    /// <returns>True if the position is available; false otherwise.</returns>
-    public Boolean test_position()
-    {
-        game_moves[5] = 1;
-        return check_available(6);
-    }
-
-    /// <summary>
-    /// Method <c>test_minimax</c> is used by the testing class to test the minimax method.
-    /// </summary>
-    /// <returns>The position chosen by the AI.</returns>
-    public int test_minimax()
-    {
-        int pos = 0;
-        game_moves[0] = 1;
-        game_moves[1] = 0;
-        game_moves[2] = 1;
-        game_moves[3] = 2;
-
-        pos = get_player2_move();
-
-        game_moves[0] = 0;
-        game_moves[1] = 0;
-        game_moves[2] = 0;
-        game_moves[3] = 0;
-
-        return pos;
-    }
-
-    /// <summary>
     /// Method checks the availability of the given move.
     /// </summary>
     /// <param name="move">The chosen move of the player to be checked.</param>
     /// <returns>true if available; false otherwise.</returns>
-    bool check_available(int move)
+    public bool check_available(int move)
     {
         if (game_moves[move - 1] == 0)
         {
@@ -444,6 +346,25 @@ class Game
         {
             return false;
         }
+    }
+
+    /// <summary>
+    /// Method <c>check_win</c> checks if a player has won the game.
+    /// </summary>
+    /// <returns>True if a player has won; false otherwise.</returns>
+    bool check_win()
+    {
+        Boolean win = false;
+
+        int player1 = check_all(true);
+        int player2 = check_all(false);
+
+        if (player1 > 100 || player2 > 100)
+        {
+            win = true;
+        }
+
+        return win;
     }
 
     /// <summary>

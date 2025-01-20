@@ -9,54 +9,74 @@ namespace TicTacToe.Tests
     public class Testing
     {
         /// <summary>
-        /// Method <c>Test2</c> tests the <c>test_values_player2</c> method.
+        /// Method <c>Test1</c> tests the <c>check_all</c> method for player 1.
         /// </summary>
         [Fact]
         public void Test1()
         {
-            int player1_total = 0;
             Player player1 = new Player();
             player1.isTurn = true;
             Player player2 = new Player();
             Game game = new Game(player1, player2);
+            int total = 0;
+            game.game_moves[0] = 1;
+            game.game_moves[1] = 1;
+            game.game_moves[2] = 1;
+            game.game_moves[3] = 2;
+            game.game_moves[4] = 2;
+            game.game_moves[5] = 2;
+            game.game_moves[6] = 1;
+            game.game_moves[7] = 2;
+            game.game_moves[8] = 1;
+            total = game.check_all(true);
 
-            player1_total = game.test_values_player1();
-
-            Assert.Equal(151, player1_total);
+            Assert.Equal(151, total);
         }
 
         /// <summary>
-        /// Method <c>Test2</c> tests the <c>test_values_player2</c> method.
+        /// Method <c>Test2</c> tests the <c>check_all</c> method for player 2.
         /// </summary>
         [Fact]
         public void Test2()
         {
-            int player2_total = 0;
             Player player1 = new Player();
             player1.isTurn = true;
             Player player2 = new Player();
             Game game = new Game(player1, player2);
+            int total = 0;
+            game.game_moves[0] = 1;
+            game.game_moves[1] = 1;
+            game.game_moves[2] = 1;
+            game.game_moves[3] = 2;
+            game.game_moves[4] = 2;
+            game.game_moves[5] = 2;
+            game.game_moves[6] = 1;
+            game.game_moves[7] = 2;
+            game.game_moves[8] = 1;
+            total = game.check_all(false);
 
-            player2_total = game.test_values_player2();
-
-            Assert.Equal(115, player2_total);
+            Assert.Equal(115, total);
         }
 
         /// <summary>
-        /// Method <c>Test3</c> tests the <c>simulate_player1_winning</c> method.
+        /// Method <c>Test3</c> tests the <c>evaluate</c> method.
         /// </summary>
         [Fact]
         public void Test3()
         {
-            int player1_total = 0;
+            int total = 0;
             Player player1 = new Player();
             player1.isTurn = true;
             Player player2 = new Player();
             Game game = new Game(player1, player2);
 
-            player1_total = game.simulate_player1_winning();
+            game.game_moves[0] = 1;
+            game.game_moves[1] = 0;
+            game.game_moves[2] = 1;
+            game.game_moves[3] = 2;
+            total = game.evaluate();
 
-            Assert.Equal(-12, player1_total);
+            Assert.Equal(-12, total);
         }
 
         /// <summary>
@@ -71,7 +91,8 @@ namespace TicTacToe.Tests
             Player player2 = new Player();
             Game game = new Game(player1, player2);
 
-            taken = game.test_position();
+            game.game_moves[5] = 1;
+            taken = game.check_available(6);
 
             Assert.False(taken);
         }
@@ -88,7 +109,11 @@ namespace TicTacToe.Tests
             Player player2 = new Player();
             Game game = new Game(player1, player2);
 
-            bestMove = game.test_minimax();
+            game.game_moves[0] = 1;
+            game.game_moves[1] = 0;
+            game.game_moves[2] = 1;
+            game.game_moves[3] = 2;
+            bestMove = game.get_player2_move();
 
             Assert.Equal(2, bestMove);
         }
