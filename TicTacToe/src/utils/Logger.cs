@@ -19,7 +19,44 @@ namespace TicTacToe.Utils
                 string projectRoot = Path.GetFullPath(Path.Combine(exeDir, "..", "..", ".."));
                 string logDir = Path.Combine(projectRoot, "logs");
                 logPath = Path.Combine(logDir, "ai_moves.log");
+                if (File.Exists(logPath))
+                {
+                    File.Delete(logPath);
+                    Console.WriteLine("Removed existing log file");
+                }
+                Console.WriteLine($"Project root: {projectRoot}");
+                Console.WriteLine($"Log directory: {logDir}");
+                Console.WriteLine($"Log file path: {logPath}");
 
+                if (!Directory.Exists(logDir))
+                {
+                    Directory.CreateDirectory(logDir);
+                    Console.WriteLine("Created log directory");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Logger initialization error: {ex}");
+                throw;
+            }
+        }
+
+        public Logger(int test_case)
+        {
+            try
+            {
+                // Get executable path
+                string exePath = Assembly.GetExecutingAssembly().Location;
+                // Navigate up to project root (3 levels up from bin/Debug/net8.0)
+                string exeDir = Path.GetDirectoryName(exePath) ?? throw new InvalidOperationException("Executable directory not found");
+                string projectRoot = Path.GetFullPath(Path.Combine(exeDir, "..", "..", ".."));
+                string logDir = Path.Combine(projectRoot, "logs");
+                logPath = Path.Combine(logDir, $"ai_moves_{test_case}.log");
+                if (File.Exists(logPath))
+                {
+                    File.Delete(logPath);
+                    Console.WriteLine("Removed existing log file");
+                }
                 Console.WriteLine($"Project root: {projectRoot}");
                 Console.WriteLine($"Log directory: {logDir}");
                 Console.WriteLine($"Log file path: {logPath}");
@@ -88,6 +125,19 @@ namespace TicTacToe.Utils
             try
             {
                 File.AppendAllText(logPath, "-----------------------------------" + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Logging error: {ex}");
+                throw;
+            }
+        }
+
+        public void LogTestCase(int test_case)
+        {
+            try
+            {
+                File.AppendAllText(logPath, $"Test case {test_case}:" + Environment.NewLine);
             }
             catch (Exception ex)
             {

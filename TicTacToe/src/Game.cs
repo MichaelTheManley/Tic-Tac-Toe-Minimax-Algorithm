@@ -13,6 +13,11 @@ class Game
     /// </summary>
     private readonly Logger _logger = new Logger();
 
+    public Logger logger
+    {
+        get { return _logger; }
+    }
+
     private int[] _game_moves = new int[9];
     public int[] game_moves
     {
@@ -39,6 +44,13 @@ class Game
     {
         _player1 = p1;
         _player2 = p2;
+    }
+
+    public Game(Player p1, Player p2, int test_case)
+    {
+        _player1 = p1;
+        _player2 = p2;
+        _logger = new Logger(test_case);
     }
 
     /// <summary>
@@ -75,14 +87,21 @@ class Game
             if (player1.isTurn)
             {
                 p1_move = get_player1_move();
-
+                game_moves[p1_move - 1] = 1;
+                print_board();
             }
             else
             {
                 p2_move = get_player2_move();
+                game_moves[p2_move - 1] = 2;
+                print_board();
             }
             player1.isTurn = !player1.isTurn;
             player2.isTurn = !player2.isTurn;
+            if (check_win())
+            {
+                winner = true;
+            }
         }
     }
 
@@ -141,6 +160,7 @@ class Game
         {
             if (check_available(i)) //First check if a move can be played at the position
             {
+                game_moves[i - 1] = 2; //Temporarily set the AI on board
                 chosen_move_value = minimax(i, 3, false); //Since we are doing an iteration initially within this code block, we must set the
                                                           //maximizing player to false as the AI is initially making a move here. Thus, it will
                                                           //be the minimizing player to play next and so we pass through false (since player
@@ -150,6 +170,7 @@ class Game
                     best_move_value = chosen_move_value;
                     best_move = i;
                 }
+                game_moves[i - 1] = 0; //Revert move back
             }
         }
 
@@ -176,7 +197,6 @@ class Game
         else if (maximizing_player)
         {
             maxEval = -100000;
-            game_moves[pos - 1] = 1; //Temporarily set the AI on board
             if (check_win())
             {
                 return evaluate();
@@ -194,20 +214,19 @@ class Game
                 {
                     if (check_available(i)) //First check if a move can be played at the position
                     {
+                        game_moves[pos - 1] = 1; //Temporarily set the AI on board
                         value = minimax(i, depth - 1, false);
                         maxEval = value > maxEval ? value : maxEval;
+                        game_moves[pos - 1] = 0; //Temporarily set the AI on board
                     }
                 }
                 _logger.LogBestMove(2, pos, maxEval);
             }
-            game_moves[pos - 1] = 0; //Revert move back
             return maxEval;
         }
         else
         {
             minEval = 100000;
-            game_moves[pos - 1] = 2; //Temporarily set their move on board
-
             if (check_win())
             {
                 return evaluate();
@@ -225,13 +244,14 @@ class Game
                 {
                     if (check_available(i)) //First check if a move can be played at the position
                     {
+                        game_moves[pos - 1] = 2; //Temporarily set their move on board
                         value = minimax(i, depth - 1, true);
                         minEval = value < minEval ? value : minEval;
+                        game_moves[pos - 1] = 0; //Temporarily set their move on board
                     }
                 }
                 _logger.LogBestMove(1, pos, minEval);
             }
-            game_moves[pos - 1] = 0; //Revert move back
             return minEval;
         }
     }
@@ -380,9 +400,9 @@ class Game
         var p1_input = "";
 
         Console.Write("SYSTEM: ");
-        slow_type("We will begin Tic Tac Toe by seeing who will start. This is decided with Rock, Paper, Scissors.", 100);
+        slow_type("We will begin Tic Tac Toe by seeing who will start. This is decided with Rock, Paper, Scissors.", 50);
         Console.Write("SYSTEM: ");
-        slow_type("You may quit at any time by typing 'Q'.", 100);
+        slow_type("You may quit at any time by typing 'Q'.", 50);
         do
         {
             retry = false;
@@ -398,21 +418,21 @@ class Game
                 if ((p1_input != "R") && (p1_input != "P") && (p1_input != "S") && (p1_input != "Q"))
                 {
                     Console.Write("SYSTEM: ");
-                    slow_type("Please enter either [R] => Rock, [P] => Paper or [S] => Scissors.", 100);
-                    slow_type("PLAYER 1: ", 100);
+                    slow_type("Please enter either [R] => Rock, [P] => Paper or [S] => Scissors.", 50);
+                    slow_type("PLAYER 1: ", 50);
                 }
             } while ((p1_input != "R") && (p1_input != "P") && (p1_input != "S") && (p1_input != "Q"));
 
             if (p1_input == "Q")
             {
                 Console.Write("SYSTEM: ");
-                slow_type("Goodbye!", 100);
+                slow_type("Goodbye!", 50);
                 slow_type("and goodluck...", 400);
                 Environment.Exit(0);
             }
 
             Console.Write("SYSTEM: ");
-            slow_type("Player 2, choose your move!", 100);
+            slow_type("Player 2, choose your move!", 50);
             Console.WriteLine("PLAYER 2: ");
             randInt = rand.Next(3);
 
@@ -502,6 +522,19 @@ class Game
             System.Threading.Thread.Sleep(time);
             Console.Write(c);
         }
+        Console.WriteLine("");
+    }
+
+    /// <summary>
+    /// Print the board to the console.
+    /// </summary>
+    void print_board()
+    {
+        Console.WriteLine(" " + game_moves[0] + " | " + game_moves[1] + " | " + game_moves[2] + " ");
+        Console.WriteLine("---|---|---");
+        Console.WriteLine(" " + game_moves[3] + " | " + game_moves[4] + " | " + game_moves[5] + " ");
+        Console.WriteLine("---|---|---");
+        Console.WriteLine(" " + game_moves[6] + " | " + game_moves[7] + " | " + game_moves[8] + " ");
         Console.WriteLine("");
     }
 }
